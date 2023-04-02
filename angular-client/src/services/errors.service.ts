@@ -47,8 +47,7 @@ export class ErrorsService {
         return '**Image required';
       case controlName === 'name' &&
         serverError &&
-        control.hasError('serverError'):
-        console.log('hah?');
+        control.hasError('serverError'):;
         return serverError;
       case controlName === 'category' && control.hasError('categoryExists'):
         return 'category not found';

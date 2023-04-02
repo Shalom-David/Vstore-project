@@ -2,9 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { first } from 'rxjs';
 import { Icart, IcartData } from 'src/interfaces/cart';
 import { CartsService } from 'src/services/carts.service';
-import { Buffer } from 'buffer';
 import { FormControl } from '@angular/forms';
-import { StatesService } from 'src/services/states.service';
 import { Router } from '@angular/router';
 import { UsersService } from 'src/services/users.service';
 @Component({
@@ -22,7 +20,6 @@ export class CartComponent implements OnInit {
   token!: string;
   constructor(
     private cartService: CartsService,
-    private statesService: StatesService,
     private usersService: UsersService,
     private router: Router
   ) {}

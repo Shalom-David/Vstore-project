@@ -8,7 +8,6 @@ export class CustomDateAdapter extends NativeDateAdapter {
   }
 
   override format(date: Date, displayFormat: Object): string {
-    // Use the DatePipe to format the date, e.g., 'MM/dd/yyyy' or 'dd/MM/yyyy'
     return this.datePipe.transform(date, 'dd/MM/yyyy') || '';
   }
 

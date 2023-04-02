@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { IcartProduct } from 'src/interfaces/cart';
 import { Iorder } from 'src/interfaces/order';
-import { CartsService } from 'src/services/carts.service';
 import { DownloadReceiptService } from 'src/services/download-receipt.service';
 
 @Component({

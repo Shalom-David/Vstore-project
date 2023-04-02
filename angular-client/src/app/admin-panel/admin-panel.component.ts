@@ -3,20 +3,18 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   OnDestroy,
-  OnInit,
-  Output,
   QueryList,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import { MatTab } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs';
 import { OrdersComponent } from '../orders/orders.component';
 import { UsersService } from 'src/services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatTab } from '@angular/material/tabs';
+
 import { OrdersService } from 'src/services/orders.service';
 
 @Component({

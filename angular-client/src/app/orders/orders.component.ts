@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Router } from '@angular/router';
 import { Iorder } from 'src/interfaces/order';
 import { OrdersService } from 'src/services/orders.service';
 import { UsersService } from 'src/services/users.service';
-import { Buffer } from 'buffer';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Router } from '@angular/router';
 import { OrderCompleteComponent } from '../checkout/order-complete/order-complete.component';
 import { DownloadReceiptService } from 'src/services/download-receipt.service';
 @Component({
@@ -36,7 +35,7 @@ export class OrdersComponent implements OnInit {
 
   cancelOrder(orderId: string) {
     this.ordersService.cancelOrder({ orderId }, this.token).subscribe({
-      next: (data) => {
+      next: () => {
         this.ordersService.setOrderStatus(true);
       },
       error: (error) => {

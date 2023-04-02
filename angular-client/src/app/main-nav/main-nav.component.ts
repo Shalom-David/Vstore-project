@@ -1,19 +1,14 @@
-import {
-  Component,
-  HostListener,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 import { first, map, Observable, startWith } from 'rxjs';
 import { Icart } from 'src/interfaces/cart';
 import { Iproduct, IsearchProducts } from 'src/interfaces/product';
 import { IuserDetail } from 'src/interfaces/user';
 import { ProductService } from 'src/services/products.service';
 import { StatesService } from 'src/services/states.service';
-import { FormControl } from '@angular/forms';
+
 import {
   MatAutocomplete,
   MatAutocompleteSelectedEvent,
@@ -45,8 +40,6 @@ export class MainNavComponent implements OnInit {
 
   ngOnInit(): void {
     this.usersService.userAccessData$.subscribe((userData) => {
-      console.log('userData');
-      console.log(userData);
       if (userData.customerEmail && userData.token && userData.loggedIn) {
         this.token = userData.token;
         this.usersService
@@ -135,7 +128,6 @@ export class MainNavComponent implements OnInit {
   logout() {
     this.usersService.logout();
     this.router.navigate([''], { replaceUrl: true });
-    console.log(this.usersService.userAccessData$);
   }
   selectedSearchOption(event?: MatAutocompleteSelectedEvent, clear?: boolean) {
     switch (true) {

@@ -27,7 +27,6 @@ export class OrdersService {
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + token,
     });
-    console.log(order);
     return this.httpClient.post<Iorder>(this.ordersUrl, order, {
       headers: headers,
     });
