@@ -26,7 +26,7 @@ npm install -g nodemon
    - change to the server directory
 
      ```
-     cd your-directory/vstore-project/server
+     cd vstore-project/server
      ```
 
    - setting up the server
@@ -49,7 +49,7 @@ npm install -g nodemon
    - change to the client directory
 
      ```
-     cd your-directory/vstore-project/angular-client
+     cd vstore-project/angular-client
      ```
 
    - running the client
