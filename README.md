@@ -44,6 +44,16 @@ npm install -g nodemon
      npm run populateDB
      ```
 
+   - OpenAPI 3.0.0 documentation at http://localhost:8080/api-docs
+
+   ### default admin user:
+
+   > **Username/email**:&nbsp; `admin@admin.com`
+
+   > **Password**:&nbsp; admin
+
+   #### \*\*changing the username and password is possible via the OpenAPI UI or the client.
+
 2. setting up the client
 
    - change to the client directory

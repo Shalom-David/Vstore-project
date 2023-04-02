@@ -1,5 +1,8 @@
 import { readdir } from 'fs/promises'
 import path from 'path'
+import { User } from './models/user'
+import { genSalt, hash } from 'bcryptjs'
+import { createUser } from './controllers/users'
 export const fileMatcher = async (fileName: string, path: string) => {
   const files = await readdir(path)
   const [matchedFile] = files.filter((file) => file.includes(fileName))
@@ -26,4 +29,28 @@ export const checkFile = (file: Express.Multer.File) => {
     default:
       return
   }
+}
+
+export const createDefaultAdmin = async () => {
+  const [adminExists] = await User.find({ role: 'admin' })
+  if (!adminExists) {
+    const salt = await genSalt()
+    const hashed = await hash('admin', salt)
+    const user = await createUser(
+      {
+        firstName: 'admin',
+        lastName: 'admin',
+        email: 'admin@admin.com',
+        password: hashed,
+        billingAddress: {
+          city: 'admin town',
+          street: 'admin way',
+        },
+        role: 'admin',
+      },
+      true
+    )
+    return user
+  }
+  return
 }
