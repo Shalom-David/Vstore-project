@@ -10,6 +10,7 @@ import user from './routes/users'
 import product from './routes/products'
 import cart from './routes/carts'
 import order from './routes/orders'
+import { createDefaultAdmin } from './utils'
 
 mongoose.set('strictQuery', false)
 const mongoUrl = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.DB_NAME}?authSource=admin`
@@ -35,7 +36,7 @@ app.use('/user', user)
 app.use('/cart', cart)
 app.use('/products', product)
 app.use('/order', order)
-
+createDefaultAdmin()
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   switch (true) {
     case err.status === 401:

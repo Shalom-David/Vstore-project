@@ -46,7 +46,7 @@ router.post(
         password: res.locals.password,
       }
 
-      const newUser = await createUser(user)
+      const newUser = await createUser(user, false)
       newUser
         ? res.send({ user: newUser, token: res.locals.accessToken })
         : res.sendStatus(400)

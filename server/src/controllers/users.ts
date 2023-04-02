@@ -3,13 +3,14 @@ import { Iuser, IuserUpdateDetail } from '../interfaces/user'
 import { Cart } from '../models/cart'
 import { User } from '../models/user'
 export const createUser = async (
-  doc: Iuser
+  doc: Iuser,
+  allowAdmin: boolean
 ): Promise<Document<unknown, any, Iuser>> => {
   const existingUserByEmail = await findExistingUser(doc.email)
   if (existingUserByEmail) {
     throw { status: 400, message: 'Email already in use' }
   }
-  if (doc.role && doc.role === 'admin') {
+  if (doc.role && doc.role === 'admin' && !allowAdmin) {
     throw { status: 400, message: 'invalid role' }
   }
   const user = new User(doc)
