@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Iproduct, IupdateProduct } from 'src/interfaces/product';
+import { Iproduct } from 'src/interfaces/product';
 import { ProductService } from 'src/services/products.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { IuserDetail } from 'src/interfaces/user';

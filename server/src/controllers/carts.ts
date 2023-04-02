@@ -15,13 +15,13 @@ export const createCart = async (
     _id: product._id,
     quantity: doc.quantity,
     unitPrice: product.price,
-    totalProductPrice: product.price * doc.quantity,
+    totalProductPrice: parseFloat((product.price * doc.quantity).toFixed(2)),
   }
   const cart: Icart = {
     customer: customer.email,
     products: [cartProduct],
     creationDate: new Date().toLocaleString(),
-    totalPrice: cartProduct.totalProductPrice,
+    totalPrice: parseFloat(cartProduct.totalProductPrice.toFixed(2)),
   }
   const newCart = new Cart(cart)
   await newCart.save()
@@ -45,15 +45,22 @@ export const updateCart = async (
             productUpdated = true
             return null
           case doc.update:
-            product.totalProductPrice =
-              (product.totalProductPrice / product.quantity) * doc.quantity
+            product.totalProductPrice = parseFloat(
+              (
+                (product.totalProductPrice / product.quantity) *
+                doc.quantity
+              ).toFixed(2)
+            )
             product.quantity = doc.quantity
             productUpdated = true
             return product
           default:
-            product.totalProductPrice =
-              (product.totalProductPrice / product.quantity) *
-              (product.quantity + doc.quantity)
+            product.totalProductPrice = parseFloat(
+              (
+                (product.totalProductPrice / product.quantity) *
+                (product.quantity + doc.quantity)
+              ).toFixed(2)
+            )
             product.quantity += doc.quantity
             productUpdated = true
             return product
@@ -67,7 +74,9 @@ export const updateCart = async (
       _id: newProduct._id,
       quantity: doc.quantity,
       unitPrice: newProduct.price,
-      totalProductPrice: newProduct.price * doc.quantity,
+      totalProductPrice: parseFloat(
+        (newProduct.price * doc.quantity).toFixed(2)
+      ),
     })
   }
   if (!updatedProducts.length) {
@@ -77,9 +86,10 @@ export const updateCart = async (
   const updatedCart: Omit<Icart, 'creationDate'> = {
     customer: cartExists.customer,
     products: updatedProducts,
-    totalPrice: updatedProducts.reduce(
-      (total, product) => total + product.totalProductPrice,
-      0
+    totalPrice: parseFloat(
+      updatedProducts
+        .reduce((total, product) => total + product.totalProductPrice, 0)
+        .toFixed(2)
     ),
   }
   const cart = await Cart.findOneAndUpdate(
