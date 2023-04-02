@@ -8,6 +8,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { OrdersComponent } from './orders/orders.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -19,8 +20,9 @@ const routes: Routes = [
   { path: 'register/:step', component: RegistrationComponent },
   { path: 'profile', component: UserProfileComponent },
   { path: 'admin', component: AdminPanelComponent },
-  { path: 'orders', component: OrdersComponent },
   { path: 'admin/:tabName', component: AdminPanelComponent },
+  { path: 'orders', component: OrdersComponent },
+  { path: 'about', component: AboutComponent },
   { path: '**', redirectTo: '' },
 ];
 

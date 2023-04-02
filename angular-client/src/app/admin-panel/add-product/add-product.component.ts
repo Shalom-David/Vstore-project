@@ -1,33 +1,16 @@
 import {
   Component,
   EventEmitter,
-  inject,
-  OnChanges,
   OnInit,
   Output,
-  QueryList,
-  SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewChildren,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { first, Observable } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-
-import { map } from 'rxjs/operators';
-
+import { Router } from '@angular/router';
 import { Iproduct, IupdateProduct } from 'src/interfaces/product';
 import { ProductService } from 'src/services/products.service';
-import { Buffer } from 'buffer';
-import { PageEvent } from '@angular/material/paginator';
-import { StatesService } from 'src/services/states.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSelect } from '@angular/material/select';
-import { CartsService } from 'src/services/carts.service';
 import { IuserDetail } from 'src/interfaces/user';
-import { IcartData, IcartProduct } from 'src/interfaces/cart';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { UsersService } from 'src/services/users.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidatorsService } from 'src/services/custom-validators.service';

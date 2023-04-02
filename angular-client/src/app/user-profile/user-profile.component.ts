@@ -37,7 +37,10 @@ export class UserProfileComponent implements OnInit {
               this.token = userData.token;
             },
             error: (error) => {
-              console.error(error);
+              if (error.status === 403 || error.status === 401) {
+                this.usersService.logout();
+                this.router.navigate(['login'], { replaceUrl: true });
+              }
             },
           });
       }

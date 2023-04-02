@@ -6,10 +6,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { Iproduct, IupdateProduct } from 'src/interfaces/product';
 import { ProductService } from 'src/services/products.service';
-import { Buffer } from 'buffer';
 import { StatesService } from 'src/services/states.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { IuserDetail } from 'src/interfaces/user';
@@ -17,7 +17,6 @@ import { UsersService } from 'src/services/users.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidatorsService } from 'src/services/custom-validators.service';
 import { ErrorsService } from 'src/services/errors.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-product',

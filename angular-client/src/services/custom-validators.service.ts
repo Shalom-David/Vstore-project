@@ -67,7 +67,6 @@ export class CustomValidatorsService {
     if (!file) {
       return null;
     }
-    console.log(file);
     const fileTypes = /jpeg|jpg|png|gif|svg/;
     const extName = fileTypes.test(
       file.name.toLowerCase().split('.').pop() || ''
