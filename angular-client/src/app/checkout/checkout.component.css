@@ -1,0 +1,9 @@
+.nextBtn {
+  background-color: #f2ad54;
+}
+#button-group-payment{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+}

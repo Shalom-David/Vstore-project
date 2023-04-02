@@ -1,0 +1,510 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Swagger UI",
+    "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "object",
+            "description": "The user id"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The user first name"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The user last name"
+          },
+          "email": {
+            "type": "string",
+            "description": "The user email"
+          },
+          "personalId": {
+            "type": "number",
+            "description": "The user avatar"
+          },
+          "password": {
+            "type": "string",
+            "description": "The user password-encrypted"
+          },
+          "city": {
+            "type": "string",
+            "description": "The user city"
+          },
+          "street": {
+            "type": "string",
+            "description": "The user street"
+          },
+          "role": {
+            "type": "string",
+            "description": "The user role"
+          }
+        },
+        "example": {
+          "_id": "63ed5ea09980d3c74cfc9ae1",
+          "firstName": "first Name",
+          "lastName": "Last Name",
+          "email": "email@email.com",
+          "personalId": 123456789,
+          "password": "tester",
+          "city": "test",
+          "street": "tested",
+          "role": "admin"
+        }
+      },
+      "UserRegistration": {
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "email",
+          "personalId",
+          "password"
+        ],
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "description": "The user first name"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The user last name"
+          },
+          "email": {
+            "type": "string",
+            "description": "The user email"
+          },
+          "personalId": {
+            "type": "number",
+            "description": "The user avatar"
+          },
+          "password": {
+            "type": "string",
+            "description": "The user password-encrypted"
+          },
+          "city": {
+            "type": "string",
+            "description": "The user city"
+          },
+          "street": {
+            "type": "string",
+            "description": "The user street"
+          }
+        },
+        "example": {
+          "firstName": "first Name",
+          "lastName": "Last Name",
+          "email": "email@email.com",
+          "personalId": 123456789,
+          "password": "tester",
+          "city": "test",
+          "street": "tested"
+        }
+      },
+      "UserLogin": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The user email"
+          },
+          "password": {
+            "type": "string",
+            "description": "The user password-encrypted"
+          }
+        },
+        "example": {
+          "email": "email@email.com",
+          "password": "tester"
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "object",
+            "description": "The unique identifier for the product"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the product"
+          },
+          "category": {
+            "type": "string",
+            "description": "The category of the product"
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "description": "The price of the product"
+          },
+          "imageId": {
+            "type": "string",
+            "description": "id of the product image"
+          }
+        }
+      }
+    },
+    "responses": {
+      "notFoundError": {
+        "description": "Not found error message",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "example": {
+                "message": "Users not found with your criteria"
+              }
+            }
+          }
+        }
+      },
+      "internalServerError": {
+        "description": "Internal server error",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Unexpected error"
+            }
+          }
+        }
+      },
+      "badRequestError": {
+        "description": "Bad request error",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Bad request error"
+            }
+          }
+        }
+      },
+      "unauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Authorization header required"
+            }
+          }
+        }
+      },
+      "forbiddenError": {
+        "description": "Forbidden",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Forbidden"
+            }
+          }
+        }
+      },
+      "user": {
+        "description": "Get user",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "userLogin": {
+        "description": "Get user login",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "token": {
+                  "type": "string",
+                  "description": "Authorization Token"
+                }
+              },
+              "example": {
+                "user": {
+                  "_id": "63f268b4c17916bad7b0d0db",
+                  "firstName": "first Name1",
+                  "lastName": "Last Name1",
+                  "email": "email1@email1.com",
+                  "personalId": 123456789,
+                  "password": "$2a$10$K5E7230wX5VW9Mk2zFcBYODYpP1MflfEpGi4Bh0nO/31T/lC5UCD2",
+                  "role": "admin"
+                },
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsMUBlbWFpbDEuY29tIiwiaWF0IjoxNjc2OTMzODc4LCJleHAiOjE2NzY5MzQ0Nzh9.CyCdpILC9cjbR7W-s_XONHai8Zu-sFSitFlMglkcSsE"
+              }
+            }
+          }
+        }
+      },
+      "productList": {
+        "description": "A list of Products",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "product": {
+        "description": "A list of Products",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Product"
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Users Routes"
+    },
+    {
+      "name": "Products",
+      "description": "Products Routes"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Returns specific user details",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "customerEmail",
+            "description": "The user email",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/user"
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "security": [],
+        "summary": "create a new user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegistration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/user"
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequestError"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "summary": "login",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          }
+        },
+        "security": [],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/userLogin"
+          },
+          "400": {
+            "description": "Bad request error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "incorrect username or password"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Returns list of products",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "description": "filter products by category",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/productList"
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorizedError"
+          },
+          "403": {
+            "$ref": "#/components/responses/forbiddenError"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a new product",
+        "tags": ["Products"],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The product image file"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the product"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "The category of the product"
+                  },
+                  "price": {
+                    "type": "string",
+                    "description": "The price of the product"
+                  }
+                },
+                "required": ["image", "name", "category", "price"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/badRequestError"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFoundError"
+          },
+          "500": {
+            "$ref": "#/components/responses/internalServerError"
+          }
+        }
+      }
+    }
+  }
+}

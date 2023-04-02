@@ -1,0 +1,10 @@
+.order-success-btn {
+  background-color: #f2ad54;
+}
+
+#order-success-btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}

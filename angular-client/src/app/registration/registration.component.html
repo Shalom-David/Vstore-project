@@ -1,0 +1,189 @@
+<mat-stepper [orientation]="(stepperOrientation | async)!" [linear]="true">
+  <mat-step [stepControl]="registrationFormStep1" label="Step 1">
+    <form [formGroup]="registrationFormStep1" id="registration-form-step-1">
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <div id="some-container">
+              <h4>Email:</h4>
+              <mat-form-field appearance="fill">
+                <mat-label>Enter your email</mat-label>
+                <input
+                  matInput
+                  placeholder="pat@example.com"
+                  formControlName="email"
+                  required
+                />
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-error
+                  *ngIf="registrationFormStep1.get('email')?.invalid"
+                  >{{ errorMessage(registrationFormStep1, "email") }}</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <div>
+              <h4>Password:</h4>
+              <mat-form-field appearance="fill">
+                <mat-label>Enter your password</mat-label>
+                <input
+                  matInput
+                  [type]="hidePassword ? 'password' : 'text'"
+                  formControlName="password"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                >
+                  <mat-icon>{{
+                    hidePassword ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+                <mat-error
+                  *ngIf="registrationFormStep1.get('password')?.invalid"
+                  >{{
+                    errorMessage(registrationFormStep1, "password")
+                  }}</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <div>
+              <h4>Confirm Password:</h4>
+              <mat-form-field appearance="fill">
+                <mat-label>Confirm password</mat-label>
+                <input
+                  matInput
+                  [type]="hideConfirmPassword ? 'password' : 'text'"
+                  formControlName="confirmPassword"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hideConfirmPassword = !hideConfirmPassword"
+                >
+                  <mat-icon>{{
+                    hideConfirmPassword ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+                <mat-error
+                  *ngIf="registrationFormStep1.get('confirmPassword')?.invalid"
+                >
+                  {{ errorMessage(registrationFormStep1, "confirmPassword") }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <button mat-raised-button matStepperNext class="action-btn">
+        Next Step
+      </button>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="registrationFormStep2" label="Step 2">
+    <div id="register-container">
+      <form [formGroup]="registrationFormStep2" id="registration-form-step-2">
+        <mat-error
+          *ngIf="registrationFormStep2.hasError('invalidRole') && serverError"
+        >
+          {{ serverError }}
+        </mat-error>
+        <table class="full-width" cellspacing="0">
+          <tr>
+            <td>
+              <div class="step2-container">
+                <h4>City:</h4>
+                <mat-form-field appearance="fill">
+                  <mat-label>Enter your city</mat-label>
+                  <input matInput formControlName="city" required />
+                  <mat-error
+                    *ngIf="registrationFormStep2.get('city')?.invalid"
+                    >{{
+                      errorMessage(registrationFormStep2, "city")
+                    }}</mat-error
+                  >
+                </mat-form-field>
+              </div>
+
+              <div class="step2-container">
+                <h4>Street:</h4>
+                <mat-form-field appearance="fill">
+                  <mat-label>Enter your street</mat-label>
+                  <input matInput formControlName="street" />
+                  <mat-error
+                    *ngIf="registrationFormStep2.get('street')?.invalid"
+                    >{{
+                      errorMessage(registrationFormStep2, "street")
+                    }}</mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <table class="full-width" cellspacing="0">
+          <tr>
+            <td>
+              <div class="step2-container">
+                <h4>First Name:</h4>
+                <mat-form-field>
+                  <mat-label>Enter your first name</mat-label>
+                  <input matInput formControlName="firstName" />
+                  <mat-error>{{
+                    errorMessage(registrationFormStep2, "firstName")
+                  }}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="step2-container">
+                <h4>Last Name:</h4>
+                <mat-form-field>
+                  <mat-label>Enter your last name</mat-label>
+                  <input matInput formControlName="lastName" />
+                  <mat-error>{{
+                    errorMessage(registrationFormStep2, "lastName")
+                  }}</mat-error>
+                </mat-form-field>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <button mat-raised-button matStepperPrevious class="action-btn">
+          Back
+        </button>
+        <button
+          mat-raised-button
+          class="action-btn"
+          (click)="register()"
+          [disabled]="
+            !(registrationFormStep1.valid && registrationFormStep2.valid)
+          "
+        >
+          Register
+        </button>
+      </form>
+    </div>
+  </mat-step>
+
+  <mat-step label="Complete">
+    <div>
+      <h2 id="order-success-title">Registration Successful</h2>
+      <div id="order-success-btn-group">
+        <button mat-raised-button class="action-btn" (click)="goHome()">
+          Start Shopping!
+        </button>
+      </div>
+    </div>
+  </mat-step>
+</mat-stepper>

@@ -1,0 +1,115 @@
+<section id="edit-product-tab">
+  <div
+    id="spinner-container"
+    *ngIf="!user || user.role !== 'admin' || !products.length"
+  >
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="user && user.role === 'admin' && products.length">
+    <mat-accordion>
+      <mat-expansion-panel
+        *ngFor="let product of products"
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header class="flex-panel-header">
+          <mat-panel-title>{{ product.name }} </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <mat-panel-description class="panel-product-content">
+            <img src="{{ product.imageData }}" [alt]="product.name" />
+            <div id="description-box">
+              <h3>Description:</h3>
+              {{ product.description }}
+            </div>
+
+            <div>
+              <h3 class="inline-detail">price:</h3>
+              ${{ product.price }}
+            </div>
+            <div>
+              <h3 class="inline-detail">category:</h3>
+              {{ product.category }}
+            </div>
+          </mat-panel-description>
+
+          <button
+            *ngIf="user && user.role === 'admin'"
+            (click)="openDialog(dialogRef, product)"
+            class="action-btn"
+            mat-fab
+            extended
+          >
+            <mat-icon>edit</mat-icon>
+            Edit Product
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</section>
+<ng-template #dialogRef>
+  <div id="cancel-btn" mat-dialog-actions>
+    <button mat-icon-button color="warn" mat-dialog-close>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content-container">
+    <form [formGroup]="editProductForm">
+      <div>
+        <div><h2>Product Information:</h2></div>
+        <div>
+          <h4>Product Name:</h4>
+          <mat-form-field>
+            <mat-label>Enter product name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </div>
+        <div>
+          <h4>Product Description:</h4>
+          <mat-form-field>
+            <mat-label>Enter product description</mat-label>
+            <textarea
+              id="description-input"
+              matInput
+              formControlName="description"
+              [maxlength]="999"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <div>
+          <h4>Product Category:</h4>
+          <mat-form-field>
+            <mat-label>Enter product category:</mat-label>
+            <input matInput formControlName="category" />
+          </mat-form-field>
+        </div>
+        <div>
+          <h4>Product Price:</h4>
+          <mat-form-field>
+            <mat-label>Enter product price</mat-label>
+            <input matInput type="number" formControlName="price" />
+          </mat-form-field>
+        </div>
+        <div>
+          <h4>Product Image:</h4>
+          <input
+            type="file"
+            formControlName="image"
+            (change)="onFileSelected($event)"
+          />
+          <mat-error>{{ errorMessage(editProductForm, "image") }}</mat-error>
+        </div>
+      </div>
+      <button
+        *ngIf="user && user.role === 'admin'"
+        (click)="updateProduct()"
+        class="action-btn"
+        mat-fab
+        extended
+      >
+        <mat-icon>edit</mat-icon>Update Product
+      </button>
+    </form>
+  </div>
+</ng-template>

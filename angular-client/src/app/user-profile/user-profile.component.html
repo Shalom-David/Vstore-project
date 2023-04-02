@@ -1,0 +1,160 @@
+<section id="profile-section">
+  <div id="spinner-container">
+    <mat-spinner id="spinner" *ngIf="!user"></mat-spinner>
+  </div>
+  <div *ngIf="user">
+    <form [formGroup]="editProfileForm" id="profile-container">
+      <div class="profile-column-container">
+        <div class="profile-flex-container">
+          <div class="user-container"><h2>Personal Information:</h2></div>
+        </div>
+        <div class="profile-flex-container">
+          <div class="user-container">
+            <div>
+              <h4>First Name:</h4>
+              <div class="profile-detail" *ngIf="!edit && user">
+                {{ user.firstName }}
+              </div>
+            </div>
+            <mat-form-field *ngIf="edit && user">
+              <mat-label>Enter your first name</mat-label>
+              <input matInput formControlName="firstName" />
+            </mat-form-field>
+          </div>
+          <div class="user-container">
+            <h4>Last Name:</h4>
+            <div class="profile-detail" *ngIf="!edit && user">
+              {{ user.lastName }}
+            </div>
+            <mat-form-field *ngIf="edit && user">
+              <mat-label>Enter your last name</mat-label>
+              <input matInput formControlName="lastName" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="profile-flex-container">
+          <div class="user-container">
+            <h4>Email Address:</h4>
+            <div class="profile-detail" *ngIf="!edit && user">
+              {{ user.email }}
+            </div>
+            <mat-form-field *ngIf="edit && user">
+              <mat-label>Enter your e-mail address</mat-label>
+              <input matInput formControlName="email" />
+              <mat-error *ngIf="editProfileForm.get('email')?.invalid">{{
+                errorMessage(editProfileForm, "email")
+              }}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="edit && user" class="profile-flex-container">
+          <div class="user-container">
+            <h4>Password:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Enter your password</mat-label>
+              <input
+                matInput
+                [type]="hidePassword ? 'password' : 'text'"
+                formControlName="password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+              >
+                <mat-icon>{{
+                  hidePassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              <mat-error *ngIf="editProfileForm.get('password')?.invalid">{{
+                errorMessage(editProfileForm, "password")
+              }}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="user-container">
+            <h4>Confirm Password:</h4>
+            <mat-form-field appearance="fill">
+              <mat-label>Confirm password</mat-label>
+              <input
+                matInput
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                formControlName="confirmPassword"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideConfirmPassword = !hideConfirmPassword"
+              >
+                <mat-icon>{{
+                  hideConfirmPassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              <mat-error
+                *ngIf="editProfileForm.get('confirmPassword')?.invalid"
+                >{{
+                  errorMessage(editProfileForm, "confirmPassword")
+                }}</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="profile-flex-container">
+          <div class="user-container"><h2>Billing Information:</h2></div>
+        </div>
+        <div class="profile-flex-container">
+          <div class="user-container">
+            <h4>City:</h4>
+            <div class="profile-detail" *ngIf="!edit && user">
+              {{ user.billingAddress.city }}
+            </div>
+            <mat-form-field *ngIf="edit && user">
+              <mat-label>Enter your city</mat-label>
+              <input matInput formControlName="city" />
+            </mat-form-field>
+          </div>
+          <div class="user-container">
+            <h4>Street:</h4>
+            <div class="profile-detail" *ngIf="!edit && user">
+              {{ user.billingAddress.street }}
+            </div>
+            <mat-form-field *ngIf="edit && user">
+              <mat-label>Enter your street</mat-label>
+              <input matInput formControlName="street" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+    <button
+      *ngIf="!edit && user"
+      (click)="toggleProfileEdit(true)"
+      class="action-btn"
+      mat-fab
+      extended
+    >
+      <mat-icon>edit</mat-icon>
+      Edit Profile
+    </button>
+    <button
+      *ngIf="edit && user"
+      (click)="toggleProfileEdit(false)"
+      class="action-btn"
+      mat-fab
+      extended
+    >
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+    <button
+      *ngIf="edit && user"
+      (click)="saveProfileChanges()"
+      [class]="editProfileForm.valid ? 'action-btn' : 'action-btn-disabled'"
+      mat-fab
+      extended
+      [disabled]="!editProfileForm.valid"
+    >
+      <mat-icon>edit</mat-icon>
+      Save Changes
+    </button>
+  </div>
+</section>

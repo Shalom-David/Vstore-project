@@ -1,0 +1,60 @@
+.full-width {
+  width: 100%;
+}
+
+td {
+  padding-right: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+mat-form-field {
+  width: 350px;
+}
+
+table {
+  margin-bottom: 37px;
+}
+
+#register-container {
+  display: flex;
+  justify-content: center;
+}
+
+.step2-container {
+  margin: 0 10px;
+}
+
+.action-btn {
+  background-color: #f2ad54;
+  margin: 0 10px;
+}
+
+h4 {
+  text-align: start;
+}
+
+@media screen and (max-width: 768px) {
+  /* Adjust mat-form-field width for mobile */
+  mat-form-field {
+    width: 100%;
+  }
+
+  table {
+    margin-bottom: 20px;
+  }
+
+  td {
+    flex-direction: column;
+  }
+
+  .step2-container {
+    margin: 10px 0;
+  }
+
+  .action-btn {
+    width: 100%;
+    margin: 10px 0;
+  }
+}

@@ -1,0 +1,17 @@
+#login-form-container {
+  width: 100%;
+  margin-top: 25px;
+}
+
+.full-width {
+  width: 100%;
+}
+td {
+  padding-right: 8px;
+}
+.login-btn {
+  background-color: #f2ad54;
+}
+table{
+  margin-bottom: 37px;
+}

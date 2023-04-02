@@ -1,0 +1,17 @@
+<div *ngIf="order">
+  <div>
+    <h2 id="order-success-title">Order Successful</h2>
+    <div id="order-success-btn-group">
+      <button
+        mat-raised-button
+        class="order-success-btn"
+        (click)="downloadReceipt(order)"
+      >
+        Download Receipt
+      </button>
+      <button mat-raised-button class="order-success-btn" (click)="goHome()">
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>

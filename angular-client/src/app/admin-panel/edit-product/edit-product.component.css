@@ -1,0 +1,76 @@
+.mat-accordion
+  .mat-expansion-panel:not(.mat-expanded)
+  .mat-expansion-panel-header-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.panel-product-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 50px;
+}
+.inline-detail {
+  display: inline-block;
+}
+#description-box {
+  max-width: 400px;
+}
+.product-detail {
+  display: inline-block;
+}
+
+#cancel-btn.mat-mdc-dialog-actions {
+  justify-content: end;
+}
+
+.dialog-content-container {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+img {
+  max-width: 300px;
+  max-height: 300px;
+}
+#description-input {
+  height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#description-input:hover {
+  overflow: auto;
+}
+.action-btn {
+  background-color: #f2ad54;
+  color: black;
+  margin: 30px;
+}
+#edit-product-tab {
+  touch-action: pan-y;
+}
+#spinner-container {
+  display: flex;
+  justify-content: center;
+  height: 100svh;
+}
+@media screen and (max-width: 767px) {
+  img {
+    width: 50%;
+  }
+  .panel-product-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .mat-panel-description {
+    max-width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .flex-panel-header {
+    display: flex;
+    align-items: center;
+  }
+}

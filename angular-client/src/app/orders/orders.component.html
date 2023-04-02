@@ -1,0 +1,121 @@
+<section id="edit-product-tab">
+  <div id="spinner-container" *ngIf="!token && !orders">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="token && orders">
+    <mat-accordion>
+      <mat-expansion-panel
+        *ngFor="let order of orders"
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header class="flex-panel-header">
+          <mat-panel-title>{{ order.orderDate }} </mat-panel-title>
+
+          <mat-panel-description *ngIf="!isMobile">{{
+            order.customerEmail
+          }}</mat-panel-description>
+          <mat-panel-description *ngIf="!isMobile"
+            >Delivery: {{ order.deliveryDate }}</mat-panel-description
+          >
+          <mat-panel-description *ngIf="!isMobile" [class]="order.status">
+            {{ order.status | titlecase }}</mat-panel-description
+          >
+          <mat-panel-description *ngIf="!isMobile"
+            >Order Total: ${{
+              order.customerCart.totalPrice
+            }}</mat-panel-description
+          >
+        </mat-expansion-panel-header>
+        <div>
+          <div *ngIf="isMobile">
+            <h3>Order Information:</h3>
+            <mat-panel-description>
+              <span class="bold">Customer Email: </span
+              >{{ order.customerEmail }}</mat-panel-description
+            >
+            <mat-panel-description
+              ><span class="bold">Delivery: </span>
+              {{ order.deliveryDate }}</mat-panel-description
+            >
+            <mat-panel-description [class]="order.status"
+              ><span class="bold">Status: </span>
+              {{ order.status }}</mat-panel-description
+            >
+            <mat-panel-description class="bold total-price"
+              >Order Total: ${{
+                order.customerCart.totalPrice
+              }}</mat-panel-description
+            >
+          </div>
+          <div class="flex-container">
+            <div id="billing-info-container">
+              <h3>Billing Information:</h3>
+              <mat-panel-description class="billing-info-detail"
+                ><span class="bold">City: </span>
+                {{ order.billingAddress.city }}</mat-panel-description
+              >
+              <mat-panel-description class="billing-info-detail"
+                ><span class="bold">Street: </span>
+                {{ order.billingAddress.street }}</mat-panel-description
+              >
+              <mat-panel-description
+                id="payment-detail"
+                class="billing-info-detail"
+                ><span class="bold">Payment Method:</span> Card ends with:
+                {{ order.cardEndsWith }}</mat-panel-description
+              >
+            </div>
+          </div>
+          <mat-panel-description class="panel-product-content">
+            <h3>Products:</h3>
+            <div
+              class="panel-container"
+              *ngFor="let product of order.customerCart.products"
+            >
+              <div class="test">
+                <img src="{{ product.imageData }}" [alt]="product.name" />
+              </div>
+              <div id="description-box">
+                <h3>Description:</h3>
+                {{ product.description }}
+              </div>
+              <div>
+                <h3 class="inline-detail">Quantity:</h3>
+                {{ product.quantity }}
+              </div>
+              <div>
+                <h3 class="inline-detail">Unit Price:</h3>
+                ${{ product.unitPrice }}
+              </div>
+              <div>
+                <h3 class="inline-detail">Total Price:</h3>
+                $ {{ product.totalProductPrice }}
+              </div>
+            </div>
+          </mat-panel-description>
+
+          <button
+            *ngIf="order.status === 'shipping'"
+            (click)="cancelOrder(order._id)"
+            class="cancel-btn"
+            mat-fab
+            extended
+          >
+            <mat-icon>remove_circle_outline</mat-icon>
+            Cancel Order
+          </button>
+          <button
+            (click)="downloadReceipt(order)"
+            class="action-btn"
+            mat-fab
+            extended
+          >
+            <mat-icon>arrow_downward</mat-icon>
+            Download Receipt
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</section>

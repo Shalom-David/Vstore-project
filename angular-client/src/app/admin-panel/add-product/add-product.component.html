@@ -1,0 +1,104 @@
+<section id="add-product-tab">
+  <div id="spinner-container" *ngIf="!user || user.role !== 'admin'">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="user && user.role === 'admin'">
+    <form [formGroup]="addProductForm" id="add-product-form">
+      <div class="form-input-group-container">
+        <div><h2>Product Information:</h2></div>
+        <div class="input-container">
+          <h4>Product Name:</h4>
+          <mat-form-field class="full-width">
+            <mat-label>Enter product name</mat-label>
+            <input matInput formControlName="name" />
+
+            <mat-error>{{
+              errorMessage(addProductForm, "name", serverError || undefined)
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="input-container">
+          <h4>Product Description:</h4>
+          <mat-form-field class="full-width">
+            <mat-label>Enter product description</mat-label>
+            <textarea
+              id="description-input"
+              matInput
+              formControlName="description"
+              [maxlength]="999"
+            ></textarea>
+            <mat-error>{{
+              errorMessage(addProductForm, "description")
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="input-container">
+          <h4>Product Category:</h4>
+          <mat-form-field class="full-width">
+            <mat-label>Enter product category</mat-label>
+            <input matInput formControlName="category" />
+            <mat-error>{{
+              errorMessage(addProductForm, "category")
+            }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="input-container">
+          <h4>Product Price:</h4>
+          <mat-form-field class="full-width">
+            <mat-label>Enter product price</mat-label>
+            <input matInput type="number" formControlName="price" />
+            <mat-error>{{ errorMessage(addProductForm, "price") }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="input-container">
+          <h4>Product Image:</h4>
+          <input
+            type="file"
+            formControlName="image"
+            (change)="onFileSelected($event)"
+          />
+          <mat-error *ngIf="addProductForm.get('image')?.invalid">{{
+            errorMessage(addProductForm, "image")
+          }}</mat-error>
+        </div>
+      </div>
+      <button
+        *ngIf="user && user.role === 'admin'"
+        (click)="addProduct()"
+        [class]="addProductForm.valid ? 'action-btn' : 'action-btn-disabled'"
+        mat-fab
+        extended
+        [disabled]="!addProductForm.valid"
+      >
+        <mat-icon>library_add</mat-icon>Add New Product
+      </button>
+    </form>
+  </div>
+</section>
+
+<ng-template #dialogTemplate>
+  <div id="cancel-btn" mat-dialog-actions>
+    <button mat-icon-button color="warn" mat-dialog-close>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content-container">
+    <div>
+      <h2>Category Not Found!</h2>
+      <div mat-dialog-content>
+        <strong>Would you like to create a new category?</strong>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button
+        *ngIf="user && user.role === 'admin'"
+        (click)="confirmNewCategory()"
+        class="action-btn"
+        mat-fab
+        extended
+      >
+        <mat-icon>library_add</mat-icon>Add New Product
+      </button>
+    </div>
+  </div>
+</ng-template>

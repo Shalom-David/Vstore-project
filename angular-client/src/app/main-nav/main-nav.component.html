@@ -1,0 +1,141 @@
+<header id="navbar-main">
+  <div id="nav-top">
+    <div class="nav-left">
+      <div id="nav-logo">
+        <a title="Vstore" id="logo" href="/">Vstore</a>
+      </div>
+      <div
+        id="nav-address"
+        [title]="
+          user
+            ? user.billingAddress.city + ' ' + user.billingAddress.street
+            : 'Billing Address'
+        "
+      >
+        <button id="address-button" mat-flat-button>
+          <mat-icon>location_on</mat-icon>
+          <div id="address-container">
+            {{
+              user
+                ? user.billingAddress.city + " " + user.billingAddress.street
+                : "Billing Address"
+            }}
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="nav-fill">
+      <form id="flex-form">
+        <mat-form-field appearance="fill" id="select-category">
+          <mat-label class="category-label"
+            ><mat-icon>format_list_bulleted</mat-icon
+            ><span class="label-text"> Category</span></mat-label
+          >
+          <mat-select (selectionChange)="onOptionSelect($event)">
+            <mat-option>Clear</mat-option>
+            <mat-option
+              *ngFor="let category of categories"
+              [value]="category"
+              >{{ category }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <div class="nav-search-container">
+          <div class="nav-search-field">
+            <input
+              type="text"
+              placeholder="Search"
+              [value]="control.value"
+              [formControl]="control"
+              class="nav-input"
+              [matAutocomplete]="auto"
+            />
+
+            <button
+              (click)="selectedSearchOption()"
+              id="nav-search-button"
+              mat-raised-button
+            >
+              Search
+            </button>
+            <button
+              mat-icon-button
+              matSuffix
+              id="search-clear-btn"
+              *ngIf="control.value"
+              (click)="selectedSearchOption(undefined, true)"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
+            <mat-autocomplete
+              (optionSelected)="selectedSearchOption($event)"
+              class="search-autocomplete"
+              #auto="matAutocomplete"
+            >
+              <mat-option
+                *ngFor="let option of filteredOptions | async"
+                [value]="option.name"
+              >
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="nav-right">
+      <div id="nav-account" [title]="user ? user.firstName : 'Guest'">
+        <button [matMenuTriggerFor]="menu" id="account-button" mat-flat-button>
+          <mat-icon>account_circle</mat-icon>
+          <div id="user-container">
+            <div>Hello</div>
+            {{ user ? user.firstName : "Guest" }}
+            <small *ngIf="!user">Sign Up!</small>
+          </div>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button *ngIf="!user" mat-menu-item (click)="goTo('login')">
+            <mat-icon>login</mat-icon>
+            <span>Sign In</span>
+          </button>
+          <button *ngIf="!user" mat-menu-item (click)="goTo('register')">
+            <mat-icon>play_arrow</mat-icon>
+            <span>Sign Up</span>
+          </button>
+          <button
+            *ngIf="user && user.role === 'admin'"
+            mat-menu-item
+            (click)="goTo('admin')"
+          >
+            <mat-icon>supervisor_account</mat-icon>
+            <span>Admin Panel</span>
+          </button>
+          <button *ngIf="user" mat-menu-item (click)="goTo('profile')">
+            <mat-icon>manage_accounts</mat-icon>
+            <span>User Profile</span>
+          </button>
+          <button *ngIf="user" mat-menu-item (click)="goTo('orders')">
+            <mat-icon>view_list</mat-icon>
+            <span>My Orders</span>
+          </button>
+
+          <button *ngIf="user" mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Sign Out</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div id="nav-cart">
+        <button
+          id="cart-btn"
+          mat-flat-button
+          matBadge="{{ cart ? cart.products.length : null }}"
+          matBadgeColor="warn"
+          (click)="goTo('checkout', 'Cart')"
+        >
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,28 @@
+html,
+body {
+  text-align: center;
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  touch-action: pan-y;
+}
+.mdc-text-field {
+  overflow: visible !important;
+}
+
+#cart-btn .mat-badge-content {
+  top: 5px !important;
+  right: 5px !important;
+}
+
+.add-to-cart-snackbar,
+.login-snackbar {
+  text-align: start;
+  font-weight: bold;
+  padding-right: 30px;
+  --mat-mdc-snack-bar-button-color: #f2ad54;
+  --mdc-snackbar-container-color: #293c4e;
+}
+circle{
+  stroke :#f2ad54 !important
+}

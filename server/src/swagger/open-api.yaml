@@ -1,0 +1,1018 @@
+openapi: 3.0.0
+info:
+  title: Swagger UI
+  version: 1.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: object
+          description: The user id
+        firstName:
+          type: string
+          description: The user first name
+        lastName:
+          type: string
+          description: The user last name
+        email:
+          type: string
+          format: email
+          description: The user email
+        password:
+          type: string
+          description: The user password-encrypted
+        billingAddress:
+          type: object
+          properties:
+            city:
+              type: string
+              description: The user city
+            street:
+              type: string
+              description: The user street
+        role:
+          type: string
+          description: The user role
+      example:
+        _id: 63ed5ea09980d3c74cfc9ae1
+        firstName: first Name
+        lastName: Last Name
+        email: email@email.com
+        password: tester
+        billingAddress:
+          type: object
+          properties:
+            city:
+              type: string
+              description: The user city
+            street:
+              type: string
+              description: The user street
+        role: admin
+    UserRegistration:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - billingAddress
+      properties:
+        firstName:
+          type: string
+          description: The user first name
+        lastName:
+          type: string
+          description: The user last name
+        email:
+          type: string
+          format: email
+          description: The user email
+        password:
+          type: string
+          description: The user password
+        billingAddress:
+          type: object
+          properties:
+            city:
+              type: string
+              description: The user city
+            street:
+              type: string
+              description: The user street
+      example:
+        firstName: first Name
+        lastName: Last Name
+        email: email@email.com
+        password: tester
+        billingAddress:
+          city: test
+          street: tested
+    UserUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: The user first name
+        lastName:
+          type: string
+          description: The user last name
+        email:
+          type: string
+          format: email
+          description: The user email
+        password:
+          type: string
+          description: The user password
+        billingAddress:
+          type: object
+          properties:
+            city:
+              type: string
+              description: The user city
+            street:
+              type: string
+              description: The user street
+      example:
+        firstName: first Name
+        lastName: Last Name
+        email: email@email.com
+        password: tester
+        billingAddress:
+          city: test
+          street: tested
+    UserLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: The user email
+        password:
+          type: string
+          description: The user password-encrypted
+      example:
+        email: email@email.com
+        password: tester
+    Product:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the product
+        category:
+          type: string
+          description: The category of the product
+        price:
+          type: number
+          format: double
+          description: The price of the product
+        imageId:
+          type: string
+          description: id of the product image
+        _id:
+          type: object
+          description: The unique identifier for the product
+        description:
+          type: string
+          description: The description of the product
+          maxLength: 999
+    ProductWithImage:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the product
+        category:
+          type: string
+          description: The category of the product
+        price:
+          type: number
+          format: double
+          description: The price of the product
+        imageData:
+          type: string
+          description: image data
+        description:
+          type: string
+          description: The description of the product
+          maxLength: 999
+    PaginatedProducts:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/ProductWithImage'
+        maxPageCount:
+          type: number
+          description: number of max pages
+    CreateProduct:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+          description: The product image file must be of type jpeg / jpg / png / gif /svg
+          maxLength: 1048576
+        name:
+          type: string
+          description: The name of the product
+        category:
+          type: string
+          description: The category of the product
+        price:
+          type: string
+          description: The price of the product (number) # swagger can't verify numbers on multipart/form-data
+        description:
+          type: string
+          description: The description of the product
+          maxLength: 999
+      required:
+        - image
+        - name
+        - category
+        - price
+        - description
+    UpdateProduct:
+      type: object
+      properties:
+        image:
+          type: string
+          format: binary
+          description: The product image file must be of type jpeg / jpg / png / gif /svg
+          maxLength: 1048576
+        name:
+          type: string
+          description: The name of the product
+        category:
+          type: string
+          description: The category of the product
+        price:
+          type: string
+          description: The price of the product (number) # swagger can't verify numbers on multipart/form-data
+        productId:
+          type: string
+          description: The product ID
+        description:
+          type: string
+          description: The description of the product
+          maxLength: 999
+      required:
+        - productId
+    Cart:
+      type: object
+      required:
+        - customer
+        - creationDate
+        - products
+      properties:
+        customer:
+          type: string
+          description: The customer email
+        creationDate:
+          type: string
+          description: The product Id in the database
+        products:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/CartProduct'
+      example:
+        customer: email1@email1.com
+        creationDate: '21/02/2023, 13:19:42'
+        products:
+          - name: product name
+            quantity: 10
+            totalProductPrice: 50
+            imageData:
+              type: string
+              data:
+                - '-image link data-'
+            _id: 63f4a4e5c5a97138eee1cf87
+        totalPrice: 50
+    CartProduct:
+      type: object
+      required:
+        - name
+        - quantity
+        - totalProductPrice
+        - imageData
+      properties:
+        name:
+          type: string
+          description: name of the product
+        quantity:
+          type: number
+          description: quantity of the product
+        totalProductPrice:
+          type: number
+          description: total price of the product
+        imageData:
+          type: string
+          description: image data
+    AddToCart:
+      type: object
+      required:
+        - customerEmail
+        - productId
+        - quantity
+      properties:
+        customerEmail:
+          type: string
+          format: email
+          description: the customer email address
+        productId:
+          type: string
+          description: the product ID
+        quantity:
+          type: number
+          minimum: 1
+          maximum: 100
+          description: the product quantity
+    RemoveFromCart:
+      type: object
+      required:
+        - customerEmail
+        - productId
+      properties:
+        customerEmail:
+          type: string
+          format: email
+          description: the customer email address
+        productId:
+          type: string
+          description: the product ID
+    PlaceOrder:
+      type: object
+      required:
+        - customerEmail
+        - billingAddress
+        - deliveryDate
+        - creditCard
+      properties:
+        customerEmail:
+          type: string
+          format: email
+        billingAddress:
+          type: object
+          properties:
+            city:
+              type: string
+              example: 'city name'
+            street:
+              type: string
+              example: 'street name'
+        deliveryDate:
+          type: string
+          example: '20/2/2023'
+        creditCard:
+          type: string
+          pattern: "\\b(?:\\d[ -]*?){16}\\b"
+          example: '1234 5678 9012 3456'
+    cancelOrder:
+      type: object
+      required:
+        - orderId
+      properties:
+        orderId:
+          type: string
+          description: Id of order to cancel
+          example: 63f518dda7e79ca6c219c7f
+  responses:
+    notFoundError:
+      description: Not found error message
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: 'Not Found'
+    internalServerError:
+      description: Internal server error
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Unexpected error
+    badRequestError:
+      description: Bad request error
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Bad request error
+    unauthorizedError:
+      description: Unauthorized
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Authorization header required
+    forbiddenError:
+      description: Forbidden
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Forbidden
+    user:
+      description: user details
+      content:
+        application/json:
+          schema:
+            type: object
+            $ref: '#/components/schemas/User'
+    cart:
+      description: cart details
+      content:
+        application/json:
+          schema:
+            type: object
+            $ref: '#/components/schemas/Cart'
+    userLogin:
+      description: User Login Details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                $ref: '#/components/schemas/User'
+              token:
+                type: string
+                description: Authorization Token
+            example:
+              user:
+                _id: 63f268b4c17916bad7b0d0db
+                firstName: first Name1
+                lastName: Last Name1
+                email: email1@email1.com
+                password: $2a$10$K5E7230wX5VW9Mk2zFcBYODYpP1MflfEpGi4Bh0nO/31T/lC5UCD2
+                role: admin
+              token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsMUBlbWFpbDEuY29tIiwiaWF0IjoxNjc2OTMzODc4LCJleHAiOjE2NzY5MzQ0Nzh9.CyCdpILC9cjbR7W-s_XONHai8Zu-sFSitFlMglkcSsE
+    productList:
+      description: A list of Products
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/PaginatedProducts'
+              - type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/ProductWithImage'
+    product:
+      description: A product
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Product'
+    order:
+      description: order invoice
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - customerEmail
+              - billingAddress
+              - deliveryDate
+              - cardEndsWith
+              - customerCart
+            properties:
+              customerEmail:
+                type: string
+                format: email
+              billingAddress:
+                type: object
+                properties:
+                  city:
+                    type: string
+                    example: 'city name'
+                  street:
+                    type: string
+                    example: 'street name'
+              deliveryDate:
+                type: string
+                example: '20/2/2023'
+              cardEndsWith:
+                type: number
+                maxLength: 4
+                example: '3456'
+              customerCart:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/CartProduct'
+                  totalPrice:
+                    type: number
+    placeOrder:
+      description: order invoice
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - customerEmail
+              - billingAddress
+              - deliveryDate
+              - cardEndsWith
+            properties:
+              customerEmail:
+                type: string
+                format: email
+              billingAddress:
+                type: object
+                properties:
+                  city:
+                    type: string
+                    example: 'city name'
+                  street:
+                    type: string
+                    example: 'street name'
+              deliveryDate:
+                type: string
+                example: '20/2/2023'
+              cardEndsWith:
+                type: number
+                maxLength: 4
+                example: '3456'
+tags:
+  - name: Users
+    description: Users Routes
+  - name: Products
+    description: Products Routes
+  - name: Carts
+    description: Carts Routes
+  - name: Orders
+    description: Orders Routes
+paths:
+  /user:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Returns specific user details
+      tags:
+        - Users
+      parameters:
+        - in: header
+          name: customerEmail
+          description: The user email
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/user'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/register:
+    post:
+      security: []
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '200':
+          $ref: '#/components/responses/userLogin'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                            path:
+                              type: string
+                          required:
+                            - message
+                            - path
+                  - type: object
+                    properties:
+                      status:
+                        type: number
+                      message:
+                        type: string
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/login:
+    post:
+      summary: Get user details and Authorizatoin Token
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      security: []
+      responses:
+        '200':
+          $ref: '#/components/responses/userLogin'
+        '400':
+          description: Bad request error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: incorrect username or password
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/edit-profile:
+    patch:
+      security:
+        - bearerAuth: []
+      summary: edit user profile
+      tags:
+        - Users
+      parameters:
+        - in: header
+          name: customerEmail
+          description: The user email
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/userLogin'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                      errors:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                            path:
+                              type: string
+                          required:
+                            - message
+                            - path
+                  - type: object
+                    properties:
+                      status:
+                        type: number
+                      message:
+                        type: string
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /user/checkEmail:
+    post:
+      security: []
+      summary: check if email exists in database
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: email to check
+                  example: email@example.com
+      responses:
+        '200':
+          description: email exists status
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /products:
+    get:
+      security: []
+      summary: Returns list of products
+      tags:
+        - Products
+      parameters:
+        - in: query
+          name: category
+          description: filter products by category
+          schema:
+            type: string
+        - in: query
+          name: page
+          description: page number
+          schema:
+            type: number
+        - in: query
+          name: search
+          description: search product by name
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/productList'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+    post:
+      security:
+        - bearerAuth: []
+      summary: Create a new product
+      tags:
+        - Products
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateProduct'
+      responses:
+        '200':
+          description: Successfully created product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad request error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: invalid file type/size
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+    patch:
+      security:
+        - bearerAuth: []
+      summary: Update product details
+      tags:
+        - Products
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateProduct'
+      responses:
+        '200':
+          description: Successfully created product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad request error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: invalid file type/size
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /products/{id}:
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Remove a product from database !!CURRENTLY DISABLED!!
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          description: product id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: product removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  acknowledged:
+                    type: boolean
+                    description: product removal succeded
+                  deletedCount:
+                    type: number
+                    description: number of products removed successfully
+                example:
+                  acknowledged: true
+                  deletedCount: 1
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /cart:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get cart details
+      tags:
+        - Carts
+      parameters:
+        - in: header
+          name: customerEmail
+          description: The user email
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/cart'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+    post:
+      security:
+        - bearerAuth: []
+      summary: Add product to cart
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddToCart'
+      responses:
+        '200':
+          $ref: '#/components/responses/cart'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+    patch:
+      security:
+        - bearerAuth: []
+      summary: Remove a product from cart
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveFromCart'
+      responses:
+        '200':
+          $ref: '#/components/responses/cart'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+  /order:
+    get:
+      security:
+        - bearerAuth: []
+      summary: get list of orders
+      tags:
+        - Orders
+      parameters:
+        - in: header
+          name: customerEmail
+          description: The user email
+          schema:
+            type: string
+      responses:
+        '200':
+          description: list of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/responses/order'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+    post:
+      security:
+        - bearerAuth: []
+      summary: Place a new order
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceOrder'
+      responses:
+        '200':
+          $ref: '#/components/responses/placeOrder'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+    patch:
+      security:
+        - bearerAuth: []
+      summary: Cancel an order
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cancelOrder'
+      responses:
+        '200':
+          $ref: '#/components/responses/placeOrder'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '500':
+          $ref: '#/components/responses/internalServerError'

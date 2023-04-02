@@ -1,0 +1,102 @@
+<section>
+  <div id="spinner-container" *ngIf="!products.length">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="products.length">
+    <div class="card-container">
+      <mat-card *ngFor="let product of products" class="product-card">
+        <mat-card-header>
+          <mat-card-title-group>
+            <mat-card-title
+              ><h2>{{ product.name }}</h2></mat-card-title
+            >
+            <mat-card-subtitle
+              ><h3>${{ product.price }}</h3></mat-card-subtitle
+            >
+          </mat-card-title-group>
+        </mat-card-header>
+        <img
+          mat-card-lg-image
+          src="{{ product.imageData }}"
+          [alt]="product.name"
+        />
+        <mat-card-content
+          id="card-description"
+          (click)="openDialog(dialogRef, product)"
+        >
+          {{ product.description }}
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            (click)="addToCart(product.productId, quantitySelect.value)"
+            id="add-to-cart-btn"
+            mat-fab
+            extended
+          >
+            <mat-icon>add_shopping_cart</mat-icon>
+            Add To Cart
+          </button>
+          <mat-form-field id="card-quantity-select" appearance="outline">
+            <mat-label>Quantity</mat-label>
+            <mat-select #quantitySelect [value]="defaultQuantity">
+              <mat-option
+                *ngFor="let value of quantityArr; index as i"
+                [value]="i + 1"
+                >{{ i + 1 }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <mat-paginator
+    (page)="handlePageEvent($event)"
+    [length]="maxPageCount"
+    [pageSize]="products.length <= 16 ? 16 : products.length"
+    [pageIndex]="pageIndex"
+  >
+  </mat-paginator>
+</section>
+
+<ng-template #dialogRef>
+  <div id="cancel-btn" mat-dialog-actions>
+    <button mat-icon-button color="warn" mat-dialog-close>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content-container">
+    <div>
+      <img
+        mat-card-xl-image
+        src="{{ selectedProduct.imageData }}"
+        [alt]="selectedProduct.name"
+      />
+    </div>
+    <div id="add-to-cart-dialog" mat-dialog-actions>
+      <button
+        mat-dialog-close
+        (click)="addToCart(selectedProduct.productId, quantitySelect.value)"
+        id="add-to-cart-btn"
+        mat-fab
+        extended
+      >
+        <mat-icon>add_shopping_cart</mat-icon>
+        Add To Cart
+      </button>
+      <mat-form-field id="dialog-quantity-select" appearance="outline">
+        <mat-label>Quantity</mat-label>
+        <mat-select #quantitySelect [value]="defaultQuantity">
+          <mat-option
+            *ngFor="let value of quantityArr; index as i"
+            [value]="i + 1"
+            >{{ i + 1 }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <h1 mat-dialog-title>Description</h1>
+    <div mat-dialog-content>{{ selectedProduct.description }}</div>
+  </div>
+</ng-template>

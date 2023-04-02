@@ -1,0 +1,50 @@
+<mat-stepper
+  #stepper
+  class="example-stepper"
+  [orientation]="(stepperOrientation | async)!"
+  [linear]="true"
+>
+  <mat-step [completed]="completed" label="Cart">
+    <div id="cart-container">
+      <app-cart (cartData)="onCartDataChange($event)"></app-cart>
+
+      <button
+        *ngIf="completed"
+        class="nextBtn"
+        mat-raised-button
+        matStepperNext
+      >
+        To Payment
+      </button>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="paymentFormGroup" label="Payment">
+    <form [formGroup]="paymentFormGroup">
+      <div>
+        <app-payment
+          (formGroupChange)="paymentFormGroupChanged($event)"
+        ></app-payment>
+        <div id="button-group-payment">
+          <button class="nextBtn" mat-raised-button matStepperPrevious>
+            Back
+          </button>
+          <button
+            class="nextBtn"
+            mat-raised-button
+            matStepperNext
+            [disabled]="!paymentFormGroup.valid"
+            (click)="placeOrder()"
+          >
+            Place Order
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step label="Completed!">
+    <p>You are now done.</p>
+    <div>
+      <app-order-complete [order]="order"></app-order-complete>
+    </div>
+  </mat-step>
+</mat-stepper>

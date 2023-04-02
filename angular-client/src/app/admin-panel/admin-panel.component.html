@@ -1,0 +1,33 @@
+<mat-tab-group animationDuration="0ms"
+  [(selectedIndex)]="selectedIndex"
+  (selectedTabChange)="onTabChange($event.index)"
+  id="tabs"
+>
+  <mat-tab label="add-products">
+    <ng-template mat-tab-label>
+      <mat-icon>library_add</mat-icon>
+      Add Products
+    </ng-template>
+    <ng-container *ngIf="selectedIndex === 0">
+      <app-add-product (showSnackbar)="openSnackBar()"></app-add-product
+    ></ng-container>
+  </mat-tab>
+  <mat-tab label="edit-products">
+    <ng-template mat-tab-label>
+      <mat-icon>edit</mat-icon>
+      Edit Products
+    </ng-template>
+    <ng-container *ngIf="selectedIndex === 1">
+      <app-edit-product (showSnackbar)="openSnackBar()"></app-edit-product
+    ></ng-container>
+  </mat-tab>
+  <mat-tab label="orders">
+    <ng-template mat-tab-label>
+      <mat-icon>list</mat-icon>
+      Orders
+    </ng-template>
+    <ng-container *ngIf="selectedIndex === 2">
+      <app-orders #ordersComponent [skipInit]="true"></app-orders
+    ></ng-container>
+  </mat-tab>
+</mat-tab-group>
