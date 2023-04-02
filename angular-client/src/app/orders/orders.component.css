@@ -36,6 +36,10 @@ h3 {
 #description-box {
   max-width: 400px;
 }
+
+#description-title {
+  text-align: center;
+}
 .product-detail {
   display: inline-block;
 }

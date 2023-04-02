@@ -8,6 +8,9 @@
         <mat-card-header>
           <mat-card-title-group>
             <mat-card-title
+              [title]="product.name"
+              class="card-title"
+              (click)="openDialog(dialogRef, product)"
               ><h2>{{ product.name }}</h2></mat-card-title
             >
             <mat-card-subtitle
@@ -16,6 +19,8 @@
           </mat-card-title-group>
         </mat-card-header>
         <img
+          class="card-image"
+          (click)="openDialog(dialogRef, product)"
           mat-card-lg-image
           src="{{ product.imageData }}"
           [alt]="product.name"
@@ -67,6 +72,8 @@
     </button>
   </div>
   <div class="dialog-content-container">
+    <h2 class="dialog-title">{{ selectedProduct.name }}</h2>
+
     <div>
       <img
         mat-card-xl-image
