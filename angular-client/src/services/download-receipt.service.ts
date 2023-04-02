@@ -9,7 +9,7 @@ import { IcartProduct } from 'src/interfaces/cart';
 })
 export class DownloadReceiptService {
   @Input() order!: Iorder;
-  constructor(private router: Router, private cartService: CartsService) {}
+  constructor(private cartService: CartsService) {}
 
   private generateReceiptContent(order: Iorder): string {
     const receiptContent = `

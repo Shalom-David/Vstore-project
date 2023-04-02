@@ -55,7 +55,7 @@ export class CustomValidatorsService {
   ): ValidationErrors | null {
     const selectedDate = new Date(control.value);
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to compare only the date part
+    today.setHours(0, 0, 0, 0);
 
     if (selectedDate < today) {
       return { dateNotBeforeToday: true };
