@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IcartData, IcartProduct } from 'src/interfaces/cart';
+
 @Injectable({
   providedIn: 'root',
 })
-
 export class StatesService {
   private state = {
     selectedOption: '',
     selectedSearchOption: '',
   };
-  // private cartProducts = new BehaviorSubject<IcartProduct[]>([]);
   state$ = new BehaviorSubject(this.state);
 
   constructor() {}
