@@ -3,7 +3,8 @@ export interface IuserDetail {
   lastName: string;
   email: string;
   billingAddress: { city: string; street: string };
-  role: string
+  role: string;
+  password: string;
 }
 export interface IuserRegistrationDetail {
   firstName: string;

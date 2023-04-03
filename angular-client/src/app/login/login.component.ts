@@ -43,8 +43,10 @@ export class LoginComponent {
           this.usersService.logout();
           this.router.navigate(['login'], { replaceUrl: true });
         }
+       if(error.error.includes('username or password')){
         this.serverError = error.error;
         this.loginForm.get('password')?.setErrors({ serverError: true });
+       }
       },
     });
   }

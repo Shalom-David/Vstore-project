@@ -49,7 +49,7 @@ export class ErrorsService {
         serverError &&
         control.hasError('serverError'):;
         return serverError;
-      case controlName === 'category' && control.hasError('categoryExists'):
+      case controlName === 'category' && control.hasError('categoryNotExist'):
         return 'category not found';
       default:
         return '';

@@ -1,5 +1,4 @@
 import { Injectable, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { Iorder } from 'src/interfaces/order';
 import { CartsService } from './carts.service';
 import { IcartProduct } from 'src/interfaces/cart';
@@ -57,6 +56,5 @@ export class DownloadReceiptService {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     this.cartService.setCartStatus(true);
-
   }
 }

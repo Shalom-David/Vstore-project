@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { findCart, updateCart } from '../controllers/carts'
 import authenticateUser from '../middlewares/authenticateUser'
-import jwtSign from '../middlewares/jwtSign'
 import jwtVerify from '../middlewares/jwtVerify'
 
 const router: Router = Router()
