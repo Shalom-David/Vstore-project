@@ -65,12 +65,12 @@ export class UsersService {
     email: string,
     token: string,
     userData: IuserUpdateDetail
-  ): Observable<IuserWithAccessToken> {
+  ): Observable<IuserDetail> {
     const headers = new HttpHeaders({
       customerEmail: email,
       Authorization: 'Bearer ' + token,
     });
-    return this.httpClient.patch<IuserWithAccessToken>(
+    return this.httpClient.patch<IuserDetail>(
       `${this.userUrl}/edit-profile`,
       userData,
       { headers: headers }

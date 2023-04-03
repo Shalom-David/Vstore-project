@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IuserDetail, IuserUpdateDetail } from 'src/interfaces/user';
@@ -19,6 +19,7 @@ export class UserProfileComponent implements OnInit {
   hidePassword = true;
   hideConfirmPassword = true;
   errorMessage = this.errors.getErrorMessage;
+  userUpdated = false;
   constructor(
     private usersService: UsersService,
     private _formBuilder: FormBuilder,
@@ -76,6 +77,7 @@ export class UserProfileComponent implements OnInit {
       { validators: this.customValidators.passwordMatchValidator }
     );
   }
+
   toggleProfileEdit(edit: boolean) {
     this.edit = edit;
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -88,13 +90,20 @@ export class UserProfileComponent implements OnInit {
         .editUserProfile(this.user.email, this.token, filledFormValues)
         .subscribe({
           next: (data) => {
-            this.user = data.user;
-            this.token = data.token;
-            this.usersService.setUserAccessData(
-              data.user.email,
-              data.token,
-              true
-            );
+            if (
+              this.user.password !== data.password ||
+              this.user.email !== data.email
+            ) {
+              this.usersService.logout();
+              this.router.navigate(['/login'], { replaceUrl: true });
+            } else {
+              this.user = data;
+              this.usersService.setUserAccessData(
+                this.user.email,
+                this.token,
+                true
+              );
+            }
           },
           error: (error) => {
             if (error.status === 403 || error.status === 401) {
@@ -103,9 +112,19 @@ export class UserProfileComponent implements OnInit {
             }
           },
         });
+      this.editProfileForm.patchValue({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        city: '',
+        street: '',
+        firstName: '',
+        lastName: '',
+      });
       this.edit = false;
     }
   }
+
   private getFormValues(form: FormGroup) {
     const formValues = form.value;
     const result: Partial<IuserUpdateDetail> = {};

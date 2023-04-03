@@ -82,6 +82,9 @@
           <mat-form-field>
             <mat-label>Enter product category:</mat-label>
             <input matInput formControlName="category" />
+            <mat-error>{{
+              errorMessage(editProductForm, "category")
+            }}</mat-error>
           </mat-form-field>
         </div>
         <div>

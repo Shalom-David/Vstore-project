@@ -37,6 +37,8 @@ export class EditProductComponent implements OnInit {
   editProductForm!: FormGroup;
   selectedFile: File | null = null;
   errorMessage = this.errors.getErrorMessage;
+  categories: string[] = [];
+  productUpdated = false;
   constructor(
     private productsService: ProductService,
     private statesService: StatesService,
@@ -86,28 +88,39 @@ export class EditProductComponent implements OnInit {
   }
 
   updateProduct() {
-    const productData: IupdateProduct = {
-      productId: this.selectedProduct?.productId,
-      name: this.editProductForm.get('name')?.value,
-      description: this.editProductForm.get('description')?.value,
-      category: this.editProductForm.get('category')?.value,
-      price: this.editProductForm.get('price')?.value,
-      imageData: this.selectedFile || null,
-    };
+    if (this.categories.includes(this.editProductForm.get('category')?.value)) {
+      this.productUpdated = true;
+    } else {
+      this.editProductForm
+        .get('category')
+        ?.setErrors({ categoryNotExist: true });
+    }
 
-    this.productsService.updateProduct(productData, this.token).subscribe({
-      next: () => {
-        this.productsService.setProductStatus(true);
-        this.dialog.closeAll();
-      },
-      error: (error: any) => {
-        if (error.status === 403 || error.status === 401) {
-          this.usersService.logout();
-          this.router.navigate(['login'], { replaceUrl: true });
-          if (error.status === 403) this.showSnackbar.emit();
-        }
-      },
-    });
+    if (this.editProductForm.valid && this.productUpdated) {
+      const productData: IupdateProduct = {
+        productId: this.selectedProduct?.productId,
+        name: this.editProductForm.get('name')?.value,
+        description: this.editProductForm.get('description')?.value,
+        category: this.editProductForm.get('category')?.value,
+        price: this.editProductForm.get('price')?.value,
+        imageData: this.selectedFile || null,
+      };
+      this.productsService.updateProduct(productData, this.token).subscribe({
+        next: () => {
+          this.productsService.setProductStatus(true);
+          this.dialog.closeAll();
+          this.productUpdated = false;
+        },
+        error: (error: any) => {
+          this.productUpdated = false;
+          if (error.status === 403 || error.status === 401) {
+            this.usersService.logout();
+            this.router.navigate(['login'], { replaceUrl: true });
+            if (error.status === 403) this.showSnackbar.emit();
+          }
+        },
+      });
+    }
   }
   ngOnInit(): void {
     this.statesService.state$.subscribe((state) => {
@@ -152,6 +165,11 @@ export class EditProductComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (data) => {
+          Object.entries(data)[0][1].forEach((product: Iproduct) => {
+            if (!this.categories.includes(product.category)) {
+              this.categories.push(product.category);
+            }
+          });
           this.products = Object.entries(data)[0][1];
         },
         error: (error: any) => {

@@ -11,7 +11,7 @@ import { Buffer } from 'buffer'
 export const createOrder = async (
   doc: any
 ): Promise<Document<unknown, any, Iorder> | Iorder> => {
-  const cart = await findCart(doc.customerEmail)
+  const cart = await findCart(doc.customerEmail.toLowerCase())
 
   if (!cart)
     throw {
@@ -31,7 +31,7 @@ export const createOrder = async (
   }
   const { products, totalPrice } = cart
   const order: Iorder = {
-    customerEmail: doc.customerEmail,
+    customerEmail: doc.customerEmail.toLowerCase(),
     customerCart: {
       products: products,
       totalPrice: totalPrice,
@@ -55,10 +55,10 @@ export const createOrder = async (
   return order
 }
 export const findOrders = async (email?: string): Promise<Iorder[] | any> => {
-  const orders = await Order.find(email ? { customerEmail: email } : {})
-  // if (!email) {
-  //   return orders
-  // }
+  const orders = await Order.find(
+    email ? { customerEmail: email.toLowerCase() } : {}
+  )
+
   for (const order of orders) {
     const dateParts = order.deliveryDate.split('/')
     const formatedDate = new Date(

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!req.body.password && `${req.url.split('?')[0]}` === '/edit-profile') {
+    if (!req.body.password && req.url === '/edit-profile') {
       return next()
     }
     const salt = await genSalt()

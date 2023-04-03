@@ -9,7 +9,7 @@ import { Buffer } from 'buffer'
 export const createCart = async (
   doc: IcartData
 ): Promise<Document<unknown, any, Icart> | null | Icart> => {
-  const [customer] = await findUser(doc.customerEmail)
+  const [customer] = await findUser(doc.customerEmail.toLowerCase())
   const [product]: any = await findProductbyId(doc.productId)
   const cartProduct: IcartProduct = {
     _id: product._id,
@@ -18,7 +18,7 @@ export const createCart = async (
     totalProductPrice: parseFloat((product.price * doc.quantity).toFixed(2)),
   }
   const cart: Icart = {
-    customer: customer.email,
+    customer: customer.email.toLowerCase(),
     products: [cartProduct],
     creationDate: new Date().toLocaleString(),
     totalPrice: parseFloat(cartProduct.totalProductPrice.toFixed(2)),
@@ -32,7 +32,7 @@ export const updateCart = async (
   doc: IcartData,
   remove?: boolean
 ): Promise<Document<unknown, any, Icart> | null | Icart | string> => {
-  const cartExists = await findCart(doc.customerEmail)
+  const cartExists = await findCart(doc.customerEmail.toLowerCase())
   if (!cartExists) return await createCart(doc)
   const [newProduct]: any = await findProductbyId(doc.productId)
   if (!newProduct) throw { status: 404, message: 'Product not found' }
@@ -93,7 +93,7 @@ export const updateCart = async (
     ),
   }
   const cart = await Cart.findOneAndUpdate(
-    { customer: doc.customerEmail },
+    { customer: doc.customerEmail.toLowerCase() },
     { $set: updatedCart },
     { upsert: true, new: true }
   )
@@ -102,7 +102,7 @@ export const updateCart = async (
 }
 
 export const findCart = async (email: string): Promise<Icart> => {
-  const [cart] = await Cart.find({ customer: email })
+  const [cart] = await Cart.find({ customer: email.toLowerCase() })
   const productsDataArray: IcartProduct[] = []
   if (cart) {
     for (const product of cart.products) {

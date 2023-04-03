@@ -33,8 +33,7 @@ export class AddProductComponent implements OnInit {
   errorMessage = this.errors.getErrorMessage;
   serverError!: string;
   categories: string[] = [];
-  confirmed = false;
-
+  productAdded = false;
   constructor(
     private _formBuilder: FormBuilder,
     private customValidators: CustomValidatorsService,
@@ -99,8 +98,9 @@ export class AddProductComponent implements OnInit {
     });
   }
   confirmNewCategory() {
-    if (this.addProductForm.get('category')?.hasError('categoryExists')) {
+    if (this.addProductForm.get('category')?.hasError('categoryNotExist')) {
       this.addProductForm.get('category')?.setErrors(null);
+      this.productAdded = true;
       this.productsService.setProductStatus(true);
       this.dialog.closeAll();
     }
@@ -118,17 +118,22 @@ export class AddProductComponent implements OnInit {
       ) {
         this.addProductForm
           .get('category')
-          ?.setErrors({ categoryExists: true });
+          ?.setErrors({ categoryNotExist: true });
         this.openDialog(
           this.dialogTemplate,
           this.addProductForm.get('category')?.value
         );
       } else {
+        this.productAdded = true;
         this.productsService.setProductStatus(true);
       }
     });
     this.productsService.productsState$.subscribe((state) => {
-      if (this.addProductForm.valid && state.productUpdated) {
+      if (
+        this.addProductForm.valid &&
+        state.productUpdated &&
+        this.productAdded
+      ) {
         const productData: Omit<Iproduct, 'productId'> = {
           name: this.addProductForm.get('name')?.value,
           description: this.addProductForm.get('description')?.value,
@@ -137,13 +142,14 @@ export class AddProductComponent implements OnInit {
           imageData: this.selectedFile!,
         };
         this.productsService.addProduct(productData, this.token).subscribe({
-          next: (data: Iproduct) => {
-            this.router.navigate(['admin', 'edit-products'], {
-              replaceUrl: true,
-            });
+          next: () => {
+            if (state.productUpdated)
+              this.router.navigate(['admin', 'edit-products'], {
+                replaceUrl: true,
+              });
           },
           error: (error: any) => {
-            console.error(error);
+            this.productAdded = false;
             switch (true) {
               case error.status === 403 || error.status === 401:
                 this.usersService.logout();

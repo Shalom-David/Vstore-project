@@ -60,7 +60,7 @@ router.post(
   [userLoginValidator, jwtSign],
   async (req: Request, res: Response) => {
     try {
-      const [user] = await findUser(res.locals.email)
+      const [user] = await findUser(res.locals.email.toLowerCase())
       console.log(res.locals.accessToken)
       res.send({ user: user, token: res.locals.accessToken })
     } catch (error: any) {
@@ -70,7 +70,7 @@ router.post(
 )
 router.patch(
   '/edit-profile',
-  [jwtVerify, authenticateUser, passwordValidator, passwordEncryptor, jwtSign],
+  [jwtVerify, authenticateUser, passwordValidator, passwordEncryptor],
   async (req: Request, res: Response) => {
     try {
       let userData = req.body
@@ -79,9 +79,7 @@ router.patch(
         userData = { ...req.body, password: res.locals.password }
       }
       const updatedUser = await updateUser(email, userData)
-
-      console.log(res.locals.accessToken)
-      res.send({ user: updatedUser, token: res.locals.accessToken })
+      updatedUser ? res.send(updatedUser) : res.sendStatus(400)
     } catch (error: any) {
       res.status(error.status).send(error.message)
     }
