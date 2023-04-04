@@ -4,6 +4,7 @@
 
 - [node.js](https://nodejs.org/en)
 - [Angular CLI](https://github.com/angular/angular-cli)
+- [mongoDB](https://www.mongodb.com/docs/manual/installation/)
 - typescript
 - nodemon
 
@@ -40,7 +41,10 @@ npm install -g nodemon
 
    - populating the database
 
+     ##### open a different terminal
+
      ```
+     cd vstore-project/server
      npm run populateDB
      ```
 

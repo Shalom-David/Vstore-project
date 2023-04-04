@@ -1,4 +1,4 @@
-<mat-stepper [orientation]="(stepperOrientation | async)!" [linear]="true">
+<mat-stepper id="stepper" [orientation]="(stepperOrientation | async)!" [linear]="true">
   <mat-step [stepControl]="registrationFormStep1" label="Step 1">
     <form [formGroup]="registrationFormStep1" id="registration-form-step-1">
       <table class="full-width" cellspacing="0">
@@ -177,7 +177,7 @@
   </mat-step>
 
   <mat-step label="Complete">
-    <div>
+    <div id="confirm-container">
       <h2 id="order-success-title">Registration Successful</h2>
       <div id="order-success-btn-group">
         <button mat-raised-button class="action-btn" (click)="goHome()">

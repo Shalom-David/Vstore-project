@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorsService } from 'src/services/errors.service';
 import { UsersService } from 'src/services/users.service';
@@ -36,6 +32,10 @@ export class LoginComponent {
     this.usersService.login(this.loginForm.value).subscribe({
       next: (data) => {
         this.usersService.setUserAccessData(data.user.email, data.token, true);
+        if (data.user.role === 'admin') {
+          this.router.navigate(['admin/edit-products'], { replaceUrl: true });
+          return;
+        }
         this.router.navigate([''], { replaceUrl: true });
       },
       error: (error) => {
@@ -43,10 +43,10 @@ export class LoginComponent {
           this.usersService.logout();
           this.router.navigate(['login'], { replaceUrl: true });
         }
-       if(error.error.includes('username or password')){
-        this.serverError = error.error;
-        this.loginForm.get('password')?.setErrors({ serverError: true });
-       }
+        if (error.error.includes('username or password')) {
+          this.serverError = error.error;
+          this.loginForm.get('password')?.setErrors({ serverError: true });
+        }
       },
     });
   }
